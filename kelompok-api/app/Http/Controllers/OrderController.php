@@ -5,19 +5,32 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
     //tampilkan semua order
-    public function index()
+    public function index(Request $request)
     {
-        $order = Order::with('user', 'product')->paginate(5);
+        $user = Auth::user();
+        $perPage = $request->get('per_page', 5);
+
+        // Tentukan kueri dasar
+        if ($user->role === 'admin') {
+            // KONDISI 1: ADMIN - Ambil SEMUA order
+            $query = Order::query();
+        } else {
+            // KONDISI 2: STAFF/PETUGAS - Hanya ambil order miliknya sendiri
+            $query = Order::where('user_id', $user->id);
+        }
+
+        $orders = $query->with('user', 'product')->paginate($perPage);
 
         return response()->json([
             "success" => true,
-            "message" => "Get all Prder",
-            "data" => $order
+            "message" => "Get all Orders",
+            "data" => $orders
         ], 200);
     }
 
@@ -29,6 +42,7 @@ class OrderController extends Controller
             "user_id" => "required|exists:users,id",
             "product_id" => "required|exists:products,id",
             "quantity" => "required|integer|min:1",
+            "address" => "required|string|max:255"
         ]);
 
         // 2. cek validator error
@@ -59,6 +73,7 @@ class OrderController extends Controller
             "product_id" => $request->product_id,
             "quantity" => $request->quantity,
             "total_price" => $totalPrice,
+            "address" => $request->address,
             "status" => "pending"
         ]);
 
@@ -111,6 +126,7 @@ class OrderController extends Controller
             "user_id" => "required|exists:users,id",
             "product_id" => "required|exists:products,id",
             "quantity" => "required|integer|min:1",
+            "address" => "required|string|max:255",
             "status" => "required|string|in:pending,approved",
         ]);
 
@@ -141,6 +157,7 @@ class OrderController extends Controller
             "product_id" => $request->product_id,
             "quantity" => $request->quantity,
             "total_price" => $totalPrice,
+            "address" => $request->address,
             "status" => $request->status,
         ]);
 

@@ -36,6 +36,10 @@ export default function StaffProducts() {
       loadPages(page);
    };
 
+   const formatRupiah = (number) => {
+        return `Rp. ${Number(number).toLocaleString('id-ID')}`;
+    }
+
    if (loading) {
       return <div className="p-4">Memuat data pengguna...</div>;
    }
@@ -69,7 +73,7 @@ export default function StaffProducts() {
 
                               <div className="mt-4 flex items-center justify-between gap-4">
                                  <p className="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">
-                                    Rp. {product.price}
+                                  {formatRupiah(product.price)}
                                  </p>
 
                                  <Link

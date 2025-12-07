@@ -24,6 +24,8 @@ Route::post('/orders/{orderId}/payment', [PaymentController::class, 'store']);
 
 Route::middleware(['auth:api'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::apiResource('orders', OrderController::class);
+    Route::apiResource('/users', UserController::class);
 
     // Route::get('/user', [UserController::class, 'me']);
     // Route::put('/user', [UserController::class, 'updateSelf']);
@@ -31,9 +33,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('/users', UserController::class)->only(['update']);
 
     Route::middleware(['role:admin'])->group(function () {
-        Route::apiResource('/users', UserController::class);
         Route::apiResource('/products', ProductController::class)->only(['update', 'store', 'destroy']);
-        Route::apiResource('orders', OrderController::class);
-        Route::apiResource('payments', PaymentController::class);
     });
 });
+Route::apiResource('payments', PaymentController::class);

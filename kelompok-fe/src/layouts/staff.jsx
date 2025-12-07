@@ -163,6 +163,54 @@ export default function StaffLayout() {
                            <span className="ml-3">Product</span>
                         </Link>
                      </li>
+                     <li>
+                        <Link
+                           to={"/staff/orders"}
+                           className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                        >
+                           <svg
+                              aria-hidden="true"
+                              className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                              fill="none"
+                              viewBox="0 0 20 20"
+                              xmlns="http://www.w3.org/2000/svg"
+                           >
+                              <path
+                                 stroke="currentColor"
+                                 strokeLinecap="round"
+                                 strokeLinejoin="round"
+                                 strokeWidth="2"
+                                 d="M9 8h6m-6 4h6m-6 4h6M6 3v18l2-2 2 2 2-2 2 2 2-2 2 2V3l-2 2-2-2-2 2-2-2-2 2-2-2Z"
+                              />
+                           </svg>
+
+                           <span className="ml-3">Order</span>
+                        </Link>
+                     </li>
+                     <li>
+                        <Link
+                           to={"/staff/payments"}
+                           className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"
+                        >
+                           <svg
+                              aria-hidden="true"
+                              className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                              fill="none"
+                              viewBox="0 0 20 20"
+                              xmlns="http://www.w3.org/2000/svg"
+                           >
+                              <path
+                                 stroke="currentColor"
+                                 strokeLinecap="round"
+                                 strokeLinejoin="round"
+                                 strokeWidth="2"
+                                 d="M6 14h2m3 0h4m2 2h2m0 0h2m-2 0v2m0-2v-2m-5 4H4c-.55228 0-1-.4477-1-1V7c0-.55228.44772-1 1-1h16c.5523 0 1 .44772 1 1v4M3 10h18"
+                              />
+                           </svg>
+
+                           <span className="ml-3">Payment</span>
+                        </Link>
+                     </li>
                   </ul>
                   <li>
                      <button

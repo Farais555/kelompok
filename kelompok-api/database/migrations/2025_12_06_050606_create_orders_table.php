@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('product_id')->nullable()->constrained('products')->nullOnDelete();
             $table->integer('quantity');
             $table->decimal('total_price', 10, 2);
+            $table->string('address');
             $table->enum('status', ['pending', 'approved'])->default('pending');
             $table->timestamps();
         });

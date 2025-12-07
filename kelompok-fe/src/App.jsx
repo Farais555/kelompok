@@ -13,6 +13,15 @@ import UserCreate from "./pages/admin/users/create";
 import StaffDashboard from "./pages/staff";
 import PublicLayout from "./layouts/public";
 import Home from "./pages/public";
+import AdminPayments from "./pages/admin/payments";
+import AdminOrders from "./pages/admin/orders";
+import ShowProduct from "./pages/staff/product/show";
+import CheckoutPage from "./pages/staff/product/checkout";
+import OrderCreate from "./pages/staff/product/checkout";
+import StaffOrders from "./pages/staff/order";
+import StaffPayments from "./pages/staff/payments";
+import PaymentCreate from "./pages/staff/payments/pay";
+import Register from "./pages/auth/register";
 
 function App() {
    return (
@@ -26,6 +35,7 @@ function App() {
 
                {/* auth */}
                <Route path="login" element={<Login />} />
+               <Route path="register" element={<Register />} />
 
                {/* admin */}
                <Route path="admin" element={<AdminLayout />}>
@@ -42,6 +52,18 @@ function App() {
                      <Route path="create" element={<ProductCreate />} />
                      <Route path="edit/:id" element={<ProductEdit />} />
                   </Route>
+
+                  <Route path="payments">
+                     <Route index element={<AdminPayments />} />
+                     {/* <Route path="create" element={<ProductCreate />} />
+                     <Route path="edit/:id" element={<ProductEdit />} /> */}
+                  </Route>
+
+                  <Route path="orders">
+                     <Route index element={<AdminOrders />} />
+                     {/* <Route path="create" element={<ProductCreate />} /> */}
+                     {/* <Route path="edit/:id" element={<ProductEdit />} /> */}
+                  </Route>
                </Route>
 
                {/* staff */}
@@ -50,6 +72,19 @@ function App() {
 
                   <Route path="products">
                      <Route index element={<StaffProducts />} />
+                     <Route path="show/:id" element={<ShowProduct />} />
+                     <Route path="checkout" element={<OrderCreate />} />
+                  </Route>
+
+                  <Route path="orders">
+                     <Route index element={<StaffOrders />} />
+                     {/* <Route path="create" element={<ProductCreate />} /> */}
+                     {/* <Route path="edit/:id" element={<ProductEdit />} /> */}
+                  </Route>
+
+                  <Route path="payments">
+                     <Route index element={<StaffPayments />} />
+                     <Route path="pay/:orderId" element={<PaymentCreate />} />
                   </Route>
                </Route>
             </Routes>

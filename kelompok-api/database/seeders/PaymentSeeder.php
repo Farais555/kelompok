@@ -17,7 +17,7 @@ class PaymentSeeder extends Seeder
             'order_id' => '1',
             'method' => 'cod',
             'proof' => null,
-            'status' => 'cod',
+            'status' => 'unpaid',
             'paid_at' => null,
             'confirmed_at' => '2025-11-12',
         ]);

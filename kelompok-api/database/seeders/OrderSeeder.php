@@ -18,6 +18,7 @@ class OrderSeeder extends Seeder
             "product_id" => "2",
             "quantity" => "3",
             "total_price" => "20000",
+            "address" => "jakarta",
             "status" => "pending"
         ]);
 
@@ -26,6 +27,7 @@ class OrderSeeder extends Seeder
             "product_id" => "1",
             "quantity" => "4",
             "total_price" => "100000",
+            "address" => "jakarta",
             "status" => "approved"
         ]);
     }
