@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { deletePayment, fetchPayments } from "../../../_services/payments";
-import { getOrders } from "../../../_services/orders";
 import { Link } from "react-router-dom";
 
 export default function StaffPayments() {
    const [payments, setPayments] = useState([]);
-   const [orders, setOrders] = useState([]);
    const [pagination, setPagination] = useState({});
    const [loading, setLoading] = useState(true);
 
@@ -15,10 +13,8 @@ export default function StaffPayments() {
       setLoading(true);
       try {
          const pagination = await fetchPayments(page);
-         const order = await getOrders();
 
          setPayments(pagination.data);
-         setOrders(order.data);
 
          setPagination(pagination);
       } catch (error) {
@@ -41,10 +37,6 @@ export default function StaffPayments() {
       loadPages(page);
    };
 
-   const getOrderId = (id) => {
-      const order = orders.find((order) => order.id === id);
-      return order ? order.id : "Unknown order";
-   };
 
    const toggleDropdown = (id) => {
       setOpenDropdownId(openDropdownId === id ? null : id);
@@ -110,23 +102,12 @@ export default function StaffPayments() {
                                  key={payment.id}
                                  className="border-b dark:border-gray-700"
                               >
-                                 <th
-                                    scope="row"
-                                    className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                 >
-                                    {getOrderId(payment.order_id)}
-                                 </th>
+                                 
                                  <td className="px-4 py-3">{payment.method}</td>
                                  <td className="px-4 py-3 max-w-[150px] truncate">
                                     {payment.proof}
                                  </td>
                                  <td className="px-4 py-3">{payment.status}</td>
-                                 <td className="px-4 py-3">
-                                    {payment.paid_at}
-                                 </td>
-                                 <td className="px-4 py-3">
-                                    {payment.confirmed_at}
-                                 </td>
                                  <td className="px-4 py-3 flex items-center justify-end relative">
                                     <button
                                        id={`dropdown-button-${payment.id}`}
