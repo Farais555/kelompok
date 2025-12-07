@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
-import {
-   fetchPayments,
-   getPayments,
-} from "../../../_services/payments";
-import { getOrders } from "../../../_services/orders";
+import { fetchPayments, getPayments } from "../../../_services/payments";
 
 export default function AdminPayments() {
    const [payments, setPayments] = useState([]);
-   const [orders, setOrders] = useState([]);
    const [pagination, setPagination] = useState({});
    const [loading, setLoading] = useState(true);
 
@@ -25,15 +20,12 @@ export default function AdminPayments() {
       loadPayments();
    }, []);
 
-
    const loadPages = async (page = 1) => {
       setLoading(true);
       try {
          const pagination = await fetchPayments(page);
-         const order = await getOrders();
 
          setPayments(pagination.data);
-         setOrders(order.data);
 
          setPagination(pagination);
       } catch (error) {
@@ -56,10 +48,6 @@ export default function AdminPayments() {
       loadPages(page);
    };
 
-   const getOrderId = (id) => {
-      const order = orders.find((order) => order.id === id);
-      return order ? order.id : "Unknown order";
-   };
 
    if (loading) {
       return <div className="p-4">Memuat data pengguna...</div>;
@@ -75,9 +63,6 @@ export default function AdminPayments() {
                      <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                            <th scope="col" className="px-4 py-3">
-                              Order
-                           </th>
-                           <th scope="col" className="px-4 py-3">
                               Metode
                            </th>
                            <th scope="col" className="px-4 py-3">
@@ -86,12 +71,7 @@ export default function AdminPayments() {
                            <th scope="col" className="px-4 py-3">
                               Status
                            </th>
-                           <th scope="col" className="px-4 py-3">
-                              Dibayar
-                           </th>
-                           <th scope="col" className="px-4 py-3">
-                              Disetujui
-                           </th>
+
                            <th scope="col" className="px-4 py-3">
                               <span className="sr-only">Actions</span>
                            </th>
@@ -104,26 +84,12 @@ export default function AdminPayments() {
                                  key={payment.id}
                                  className="border-b dark:border-gray-700"
                               >
-                                 <th
-                                    scope="row"
-                                    className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                                 >
-                                    {getOrderId(payment.order_id)}
-                                 </th>
                                  <td className="px-4 py-3">{payment.method}</td>
                                  <td className="px-4 py-3 max-w-[150px] truncate">
                                     {payment.proof}
                                  </td>
                                  <td className="px-4 py-3">{payment.status}</td>
-                                 <td className="px-4 py-3">
-                                    {payment.paid_at}
-                                 </td>
-                                 <td className="px-4 py-3">
-                                    {payment.confirmed_at}
-                                 </td>
-                                 <td className="px-4 py-3 flex items-center justify-end relative">
-
-                                 </td>
+                                 <td className="px-4 py-3 flex items-center justify-end relative"></td>
                               </tr>
                            ))
                         ) : (
