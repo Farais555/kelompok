@@ -57,9 +57,20 @@ export const fetchPayments = async (page = 1) => {
 };
 
 export const confirmPayment = async (orderId, formData) => {
-    // 🚨 Header 'Content-Type': 'multipart/form-data' diperlukan untuk file,
-    // tetapi Axios biasanya menanganinya secara otomatis saat Anda mengirim FormData.
+
     const response = await axios.post(`/api/orders/${orderId}/payment`, formData); 
     
     return response.data;
+};
+
+export const updatePaymentStatus = (paymentId, newStatus) => {
+
+    const payload = {
+        status: newStatus,
+
+    };
+    
+
+    return API.patch(`/payments/${paymentId}`, payload);
+
 };

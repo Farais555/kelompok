@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { deleteOrder, fetchOrders } from "../../../_services/orders";
+import { fetchOrders } from "../../../_services/orders";
 import { getUsers } from "../../../_services/auth";
 import { getProducts } from "../../../_services/products";
 import { Link } from "react-router-dom";
@@ -10,8 +10,6 @@ export default function StaffOrders() {
    const [products, setProducts] = useState([]);
    const [pagination, setPagination] = useState({});
    const [loading, setLoading] = useState(true);
-
-   const [openDropdownId, setOpenDropdownId] = useState(null);
 
    const loadPages = async (page = 1) => {
       setLoading(true);
@@ -55,26 +53,22 @@ export default function StaffOrders() {
       return user ? user.name.split(" ")[0] : "Unknown user";
    };
 
-   const toggleDropdown = (id) => {
-      setOpenDropdownId(openDropdownId === id ? null : id);
-   };
+   // const handleDelete = async (id) => {
+   //    const confirmDelete = window.confirm(
+   //       "Are you sure to delete this content?"
+   //    );
 
-   const handleDelete = async (id) => {
-      const confirmDelete = window.confirm(
-         "Are you sure to delete this content?"
-      );
+   //    if (confirmDelete) {
+   //       try {
+   //          await deleteOrder(id);
 
-      if (confirmDelete) {
-         try {
-            await deleteOrder(id);
-
-            await loadPages(pagination.current_page);
-         } catch (error) {
-            console.error("Gagal menghapus order:", error);
-            alert("Gagal menghapus data.");
-         }
-      }
-   };
+   //          await loadPages(pagination.current_page);
+   //       } catch (error) {
+   //          console.error("Gagal menghapus order:", error);
+   //          alert("Gagal menghapus data.");
+   //       }
+   //    }
+   // };
 
    if (loading) {
       return <div className="p-4">Memuat data pengguna...</div>;
@@ -137,53 +131,13 @@ export default function StaffOrders() {
                                  <td className="px-3 py-2">{order.address}</td>
                                  <td className="px-3 py-2">{order.status}</td>
                                  <td className="px-4 py-3 flex items-center justify-end relative">
-                                    <button
-                                       id={`dropdown-button-${order.id}`}
-                                       onClick={() => toggleDropdown(order.id)}
-                                       className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
+                                    <Link
+                                       to={`/staff/payments/pay/${order.id}`}
                                        type="button"
+                                       className="flex items-center justify-center text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800"
                                     >
-                                       <svg
-                                          className="w-5 h-5"
-                                          aria-hidden="true"
-                                          fill="currentColor"
-                                          viewBox="0 0 20 20"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                       >
-                                          <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                       </svg>
-                                    </button>
-                                    {openDropdownId === order.id && (
-                                       <div
-                                          id="apple-imac-27-dropdown"
-                                          className="absolute right-0 mt-2 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
-                                          style={{ top: "100%", right: "0" }}
-                                       >
-                                          <ul
-                                             className="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                             aria-labelledby={`dropdown-button-${order.id}`}
-                                          >
-                                             <li>
-                                                <Link
-                                                   to={`/staff/orders/edit/${order.id}`}
-                                                   className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                                >
-                                                   Edit
-                                                </Link>
-                                             </li>
-                                          </ul>
-                                          <div className="py-1">
-                                             <button
-                                                onClick={() =>
-                                                   handleDelete(order.id)
-                                                }
-                                                className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                             >
-                                                Delete
-                                             </button>
-                                          </div>
-                                       </div>
-                                    )}
+                                       Bayar
+                                    </Link>
                                  </td>
                               </tr>
                            ))

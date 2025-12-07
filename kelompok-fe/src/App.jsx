@@ -39,7 +39,7 @@ function App() {
 
                {/* admin */}
                <Route path="admin" element={<AdminLayout />}>
-                  <Route index element={<Dashboard />} />
+                  <Route index element={<AdminUsers />} />
 
                   <Route path="users">
                      <Route index element={<AdminUsers />} />
@@ -68,7 +68,7 @@ function App() {
 
                {/* staff */}
                <Route path="staff" element={<StaffLayout />}>
-                  <Route index element={<StaffDashboard />} />
+                  <Route index element={<StaffProducts />} />
 
                   <Route path="products">
                      <Route index element={<StaffProducts />} />

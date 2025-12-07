@@ -22,10 +22,8 @@ class PaymentController extends Controller
     }
 
     // tambah data
-    public function store(Request $request, $orderId)
+    public function store(Request $request)
     {
-        $order = Order::findOrFail($orderId);
-
         // 1. validator
         $validator = Validator::make($request->all(), [
             'method' => 'required|in:cod,transfer',
@@ -47,7 +45,6 @@ class PaymentController extends Controller
 
         // 4. insert data
         $payment = Payment::create([
-            'order_id' => $order->id,
             'method' => $request->method,
             'proof' => $image,
             'status' => 'unpaid'

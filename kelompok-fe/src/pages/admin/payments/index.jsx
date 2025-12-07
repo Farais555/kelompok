@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { deletePayment, fetchPayments } from "../../../_services/payments";
+import {
+   fetchPayments,
+   getPayments,
+   updatePaymentStatus,
+} from "../../../_services/payments";
 import { getOrders } from "../../../_services/orders";
 import { Link } from "react-router-dom";
 
@@ -9,7 +13,44 @@ export default function AdminPayments() {
    const [pagination, setPagination] = useState({});
    const [loading, setLoading] = useState(true);
 
-   const [openDropdownId, setOpenDropdownId] = useState(null);
+   // Fungsi untuk memuat data pembayaran
+   const loadPayments = async () => {
+      try {
+         const paginator = await getPayments();
+         setPayments(paginator.data);
+      } catch (error) {
+         console.error("Gagal memuat pembayaran:", error);
+      }
+   };
+
+   useEffect(() => {
+      loadPayments();
+   }, []);
+
+   const handleApprove = async (paymentId) => {
+      if (
+         !window.confirm(
+            `Yakin ingin menyetujui (PAID) pembayaran ID: ${paymentId}?`
+         )
+      ) {
+         return;
+      }
+
+      try {
+         await updatePaymentStatus(paymentId, "paid");
+
+         alert(`Pembayaran ID ${paymentId} berhasil disetujui.`);
+
+         loadPayments();
+      } catch (error) {
+         console.error("Error saat menyetujui pembayaran:", error);
+         alert(
+            `Gagal menyetujui pembayaran. Detail: ${
+               error.response?.data?.message || "Server Error"
+            }`
+         );
+      }
+   };
 
    const loadPages = async (page = 1) => {
       setLoading(true);
@@ -44,27 +85,6 @@ export default function AdminPayments() {
    const getOrderId = (id) => {
       const order = orders.find((order) => order.id === id);
       return order ? order.id : "Unknown order";
-   };
-
-   const toggleDropdown = (id) => {
-      setOpenDropdownId(openDropdownId === id ? null : id);
-   };
-
-   const handleDelete = async (id) => {
-      const confirmDelete = window.confirm(
-         "Are you sure to delete this content?"
-      );
-
-      if (confirmDelete) {
-         try {
-            await deletePayment(id);
-
-            await loadPages(pagination.current_page);
-         } catch (error) {
-            console.error("Gagal menghapus payment:", error);
-            alert("Gagal menghapus data.");
-         }
-      }
    };
 
    if (loading) {
@@ -129,54 +149,12 @@ export default function AdminPayments() {
                                  </td>
                                  <td className="px-4 py-3 flex items-center justify-end relative">
                                     <button
-                                       id={`dropdown-button-${payment.id}`}
-                                       onClick={() =>
-                                          toggleDropdown(payment.id)
-                                       }
-                                       className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
+                                       onClick={handleApprove}
                                        type="button"
+                                       className="flex items-center justify-center text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800"
                                     >
-                                       <svg
-                                          className="w-5 h-5"
-                                          aria-hidden="true"
-                                          fill="currentColor"
-                                          viewBox="0 0 20 20"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                       >
-                                          <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                       </svg>
+                                       Approve
                                     </button>
-                                    {openDropdownId === payment.id && (
-                                       <div
-                                          id="apple-imac-27-dropdown"
-                                          className="absolute right-0 mt-2 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
-                                          style={{ top: "100%", right: "0" }}
-                                       >
-                                          <ul
-                                             className="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                             aria-labelledby={`dropdown-button-${payment.id}`}
-                                          >
-                                             <li>
-                                                <Link
-                                                   to={`/admin/payments/edit/${payment.id}`}
-                                                   className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                                >
-                                                   Edit
-                                                </Link>
-                                             </li>
-                                          </ul>
-                                          <div className="py-1">
-                                             <button
-                                                onClick={() =>
-                                                   handleDelete(payment.id)
-                                                }
-                                                className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                                             >
-                                                Delete
-                                             </button>
-                                          </div>
-                                       </div>
-                                    )}
                                  </td>
                               </tr>
                            ))
