@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import {
    fetchPayments,
    getPayments,
-   updatePaymentStatus,
 } from "../../../_services/payments";
 import { getOrders } from "../../../_services/orders";
-import { Link } from "react-router-dom";
 
 export default function AdminPayments() {
    const [payments, setPayments] = useState([]);
@@ -27,30 +25,6 @@ export default function AdminPayments() {
       loadPayments();
    }, []);
 
-   const handleApprove = async (paymentId) => {
-      if (
-         !window.confirm(
-            `Yakin ingin menyetujui (PAID) pembayaran ID: ${paymentId}?`
-         )
-      ) {
-         return;
-      }
-
-      try {
-         await updatePaymentStatus(paymentId, "paid");
-
-         alert(`Pembayaran ID ${paymentId} berhasil disetujui.`);
-
-         loadPayments();
-      } catch (error) {
-         console.error("Error saat menyetujui pembayaran:", error);
-         alert(
-            `Gagal menyetujui pembayaran. Detail: ${
-               error.response?.data?.message || "Server Error"
-            }`
-         );
-      }
-   };
 
    const loadPages = async (page = 1) => {
       setLoading(true);
@@ -148,13 +122,7 @@ export default function AdminPayments() {
                                     {payment.confirmed_at}
                                  </td>
                                  <td className="px-4 py-3 flex items-center justify-end relative">
-                                    <button
-                                       onClick={handleApprove}
-                                       type="button"
-                                       className="flex items-center justify-center text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800"
-                                    >
-                                       Approve
-                                    </button>
+
                                  </td>
                               </tr>
                            ))

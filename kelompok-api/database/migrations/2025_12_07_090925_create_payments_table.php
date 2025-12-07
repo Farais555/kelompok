@@ -16,9 +16,9 @@ return new class extends Migration
             $table->foreignId('order_id')->nullable()->constrained('orders')->nullOnDelete();
             $table->enum('method', ['cod', 'transfer']);
             $table->string('proof')->nullable();
-            $table->enum('status', ['unpaid', 'paid', 'failed'])->default('unpaid');
-            $table->dateTime('paid_at')->nullable();
-            $table->dateTime('confirmed_at')->nullable();
+            $table->enum('status', ['unpaid', 'paid', 'failed'])->default('paid');
+            $table->date('paid_at')->now();
+            $table->date('confirmed_at')->now();
             $table->timestamps();
         });
     }
