@@ -37,7 +37,6 @@ export default function StaffPayments() {
       loadPages(page);
    };
 
-
    const toggleDropdown = (id) => {
       setOpenDropdownId(openDropdownId === id ? null : id);
    };
@@ -73,9 +72,6 @@ export default function StaffPayments() {
                      <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                            <th scope="col" className="px-4 py-3">
-                              Order
-                           </th>
-                           <th scope="col" className="px-4 py-3">
                               Metode
                            </th>
                            <th scope="col" className="px-4 py-3">
@@ -84,12 +80,7 @@ export default function StaffPayments() {
                            <th scope="col" className="px-4 py-3">
                               Status
                            </th>
-                           <th scope="col" className="px-4 py-3">
-                              Dibayar
-                           </th>
-                           <th scope="col" className="px-4 py-3">
-                              Disetujui
-                           </th>
+
                            <th scope="col" className="px-4 py-3">
                               <span className="sr-only">Actions</span>
                            </th>
@@ -102,7 +93,6 @@ export default function StaffPayments() {
                                  key={payment.id}
                                  className="border-b dark:border-gray-700"
                               >
-                                 
                                  <td className="px-4 py-3">{payment.method}</td>
                                  <td className="px-4 py-3 max-w-[150px] truncate">
                                     {payment.proof}
