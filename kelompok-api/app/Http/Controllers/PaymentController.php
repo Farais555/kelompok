@@ -47,7 +47,7 @@ class PaymentController extends Controller
         $payment = Payment::create([
             'method' => $request->method,
             'proof' => $image,
-            'status' => 'paid'
+            'status' => 'unpaid'
         ]);
 
         return response()->json([
