@@ -12,6 +12,7 @@ export default function AdminPayments() {
    const [orders, setOrders] = useState([]);
    const [pagination, setPagination] = useState({});
    const [loading, setLoading] = useState(true);
+   const [currentPage, setCurrentPage] = useState(1);
 
    // Fungsi untuk memuat data pembayaran
    const loadPayments = async () => {
@@ -29,41 +30,36 @@ export default function AdminPayments() {
 
    const handleApprove = async (paymentId) => {
       if (
-         !window.confirm(
-            `Yakin ingin menyetujui (PAID) pembayaran ID: ${paymentId}?`
-         )
-      ) {
+         !window.confirm(`Yakin ingin menyetujui pembayaran ID: ${paymentId}?`)
+      )
          return;
-      }
 
       try {
          await updatePaymentStatus(paymentId, "paid");
-
          alert(`Pembayaran ID ${paymentId} berhasil disetujui.`);
 
-         loadPayments();
+         // Refresh data di halaman yang sama agar tidak kembali ke hal 1
+         loadPages(currentPage);
       } catch (error) {
-         console.error("Error saat menyetujui pembayaran:", error);
-         alert(
-            `Gagal menyetujui pembayaran. Detail: ${
-               error.response?.data?.message || "Server Error"
-            }`
-         );
+         const msg = error.response?.data?.message || "Server Error";
+         alert(`Gagal menyetujui: ${msg}`);
       }
    };
 
    const loadPages = async (page = 1) => {
       setLoading(true);
       try {
-         const pagination = await fetchPayments(page);
-         const order = await getOrders();
+         const paginator = await fetchPayments(page);
+         const orderData = await getOrders();
 
-         setPayments(pagination.data);
-         setOrders(order.data);
+         setPayments(paginator.data);
+         // Pastikan jika getOrders juga ber-paginasi, ambil .data-nya
+         setOrders(orderData.data || orderData);
 
-         setPagination(pagination);
+         setPagination(paginator);
+         setCurrentPage(page);
       } catch (error) {
-         console.error("Cannot load incomes:", error);
+         console.error("Cannot load data:", error);
       } finally {
          setLoading(false);
       }
@@ -75,10 +71,8 @@ export default function AdminPayments() {
 
    const handlePageChange = (url) => {
       if (!url) return;
-
       const urlParams = new URLSearchParams(new URL(url).search);
       const page = urlParams.get("page");
-
       loadPages(page);
    };
 
@@ -149,7 +143,7 @@ export default function AdminPayments() {
                                  </td>
                                  <td className="px-4 py-3 flex items-center justify-end relative">
                                     <button
-                                       onClick={handleApprove}
+                                       onClick={() => handleApprove(payment.id)}
                                        type="button"
                                        className="flex items-center justify-center text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-indigo-600 dark:hover:bg-indigo-700 focus:outline-none dark:focus:ring-indigo-800"
                                     >
