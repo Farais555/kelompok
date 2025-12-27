@@ -26,6 +26,7 @@ class PaymentController extends Controller
     {
         // 1. validator
         $validator = Validator::make($request->all(), [
+            'order_id' => 'required|exists:orders,id',
             'method' => 'required|in:cod,transfer',
             'proof' => 'required_if:method,transfer|image|mimes:jpg,png,jpeg|max:2048',
         ]);
@@ -45,6 +46,7 @@ class PaymentController extends Controller
 
         // 4. insert data
         $payment = Payment::create([
+            'order_id' => $request->order_id,
             'method' => $request->method,
             'proof' => $image,
             'status' => 'unpaid'

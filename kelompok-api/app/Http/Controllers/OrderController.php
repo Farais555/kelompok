@@ -152,7 +152,7 @@ class OrderController extends Controller
         $totalPrice = $product->price * $request->quantity;
 
         // 4. insert data
-        $order = Order::create([
+        $order = Order::update([
             "user_id" => $request->user_id,
             "product_id" => $request->product_id,
             "quantity" => $request->quantity,
@@ -161,14 +161,12 @@ class OrderController extends Controller
             "status" => $request->status,
         ]);
 
-        // kurangi stok produk
-        $product->decrement('stock', $request->quantity);
 
         // 5. response
         return response()->json([
             'success' => true,
             'message' => 'Order added successfuly!',
-            'data' => $order->load('user', 'product')
+            'data' => $order
         ], 201);
     }
 

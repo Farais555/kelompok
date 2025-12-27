@@ -3,9 +3,10 @@ import { useState } from "react";
 import { createPayment } from "../../../_services/payments";
 
 export default function PaymentCreate() {
-   const { orderId } = useParams(); 
+   const { orderId } = useParams();
 
    const [formData, setFormData] = useState({
+      order_id: orderId,
       method: "",
       proof: null,
    });
@@ -15,25 +16,21 @@ export default function PaymentCreate() {
    const handleChange = (e) => {
       const { name, value, type, files } = e.target;
 
-
       if (type === "file") {
          setFormData((prev) => ({
             ...prev,
-            [name]: files[0], 
+            [name]: files[0],
          }));
-      }
-
-      else {
+      } else {
          setFormData((prev) => ({
             ...prev,
-            [name]: value, 
+            [name]: value,
          }));
       }
    };
 
    const handleSubmit = async (e) => {
       e.preventDefault();
-
 
       if (!orderId) {
          alert("Order ID tidak ditemukan di URL. Tidak dapat melanjutkan.");
@@ -49,8 +46,8 @@ export default function PaymentCreate() {
       }
 
       try {
-
          const payload = new FormData();
+         payload.append("order_id", formData.order_id)
          payload.append("method", formData.method);
          if (formData.proof) {
             payload.append("proof", formData.proof);
@@ -77,7 +74,6 @@ export default function PaymentCreate() {
                </h2>
                <form onSubmit={handleSubmit}>
                   <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
-
                      <div>
                         <label
                            htmlFor="payment_method_select"
@@ -98,7 +94,6 @@ export default function PaymentCreate() {
                         </select>
                      </div>
 
-
                      <div className="w-full">
                         <label
                            htmlFor="proof"
@@ -118,11 +113,18 @@ export default function PaymentCreate() {
                         />
                      </div>
 
-
                      <div className="w-full">
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                            Order Id
                         </label>
+                        <input
+                           type="hidden"
+                           name="order_id"
+                           value={formData.order_id} // ikat ke state
+                           onChange={handleChange} // update state
+                           className="border rounded p-2 w-full"
+                        />
+
                         <p className="text-gray-700 dark:text-gray-300 p-2.5 bg-gray-100 rounded-lg">
                            {orderId || "Loading..."}{" "}
                         </p>
