@@ -94,6 +94,10 @@ export default function OrderCreate() {
       }
    };
 
+   const formatRupiah = (number) => {
+      return `Rp. ${Number(number).toLocaleString("id-ID")}`;
+   };
+
    return (
       <>
          <section className="bg-white dark:bg-gray-900">
@@ -135,7 +139,7 @@ export default function OrderCreate() {
                            Harga satuan
                         </label>
                         <p className="text-gray-700 dark:text-gray-300 p-2.5 bg-gray-100 rounded-lg">
-                           {transactionData?.product_price}
+                           {formatRupiah(transactionData?.product_price)}
                         </p>
                         <input type="hidden" name="product_price" value="" />
                      </div>
@@ -163,7 +167,7 @@ export default function OrderCreate() {
                            Total
                         </label>
                         <p className="text-gray-700 dark:text-gray-300 p-2.5 bg-gray-100 rounded-lg">
-                           {transactionData?.total_price}
+                           {formatRupiah(transactionData?.total_price)}
                         </p>
                         <input
                            type="hidden"

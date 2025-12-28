@@ -53,6 +53,10 @@ export default function StaffOrders() {
       return user ? user.name.split(" ")[0] : "Unknown user";
    };
 
+   const formatRupiah = (number) => {
+      return `Rp. ${Number(number).toLocaleString("id-ID")}`;
+   };
+
    // const handleDelete = async (id) => {
    //    const confirmDelete = window.confirm(
    //       "Are you sure to delete this content?"
@@ -129,7 +133,7 @@ export default function StaffOrders() {
                                     {order.quantity}
                                  </td>
                                  <td className="px-3 py-2">
-                                    {order.total_price}
+                                    {formatRupiah(order.total_price)}
                                  </td>
                                  <td className="px-3 py-2">{order.address}</td>
                                  <td className="px-3 py-2">{order.phone}</td>
