@@ -42,7 +42,9 @@ class OrderController extends Controller
             "user_id" => "required|exists:users,id",
             "product_id" => "required|exists:products,id",
             "quantity" => "required|integer|min:1",
-            "address" => "required|string|max:255"
+            "address" => "required|string|max:255",
+            "phone" => "required|digits_between:7,15"
+
         ]);
 
         // 2. cek validator error
@@ -74,6 +76,7 @@ class OrderController extends Controller
             "quantity" => $request->quantity,
             "total_price" => $totalPrice,
             "address" => $request->address,
+            "phone" => $request->phone,
             "status" => "pending"
         ]);
 
@@ -128,6 +131,7 @@ class OrderController extends Controller
             "quantity" => "required|integer|min:1",
             "address" => "required|string|max:255",
             "status" => "required|string|in:pending,approved",
+            "phone" => "required|digits_between:7,15"
         ]);
 
         if ($validator->fails()) {
@@ -152,23 +156,22 @@ class OrderController extends Controller
         $totalPrice = $product->price * $request->quantity;
 
         // 4. insert data
-        $order = Order::create([
+        $order = Order::update([
             "user_id" => $request->user_id,
             "product_id" => $request->product_id,
             "quantity" => $request->quantity,
             "total_price" => $totalPrice,
             "address" => $request->address,
+            "phone" => $request->phone,
             "status" => $request->status,
         ]);
 
-        // kurangi stok produk
-        $product->decrement('stock', $request->quantity);
 
         // 5. response
         return response()->json([
             'success' => true,
             'message' => 'Order added successfuly!',
-            'data' => $order->load('user', 'product')
+            'data' => $order
         ], 201);
     }
 
