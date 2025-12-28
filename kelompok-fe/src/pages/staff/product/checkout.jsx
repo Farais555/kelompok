@@ -12,6 +12,7 @@ export default function OrderCreate() {
    });
 
    const [formData, setFormData] = useState({
+      order_id: "",
       user_id: "",
       product_id: "",
       quantity: "",
@@ -93,6 +94,10 @@ export default function OrderCreate() {
       }
    };
 
+   const formatRupiah = (number) => {
+      return `Rp. ${Number(number).toLocaleString("id-ID")}`;
+   };
+
    return (
       <>
          <section className="bg-white dark:bg-gray-900">
@@ -134,7 +139,7 @@ export default function OrderCreate() {
                            Harga satuan
                         </label>
                         <p className="text-gray-700 dark:text-gray-300 p-2.5 bg-gray-100 rounded-lg">
-                           {transactionData?.product_price}
+                           {formatRupiah(transactionData?.product_price)}
                         </p>
                         <input type="hidden" name="product_price" value="" />
                      </div>
@@ -162,12 +167,32 @@ export default function OrderCreate() {
                            Total
                         </label>
                         <p className="text-gray-700 dark:text-gray-300 p-2.5 bg-gray-100 rounded-lg">
-                           {transactionData?.total_price}
+                           {formatRupiah(transactionData?.total_price)}
                         </p>
                         <input
                            type="hidden"
                            name="total_price"
                            value=""
+                        />
+                     </div>
+
+                     <div className="sm:col-span-2">
+                        <label
+                           htmlFor="phone"
+                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                           Nomor Telpon
+                        </label>
+                        <input
+                           type="text"
+                           name="phone"
+                           id="phone"
+                           value={formData.phone}
+                           onChange={handleChange}
+                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                           placeholder="e.g. 08xxxx456"
+                           pattern="[0-9]{7,15}"
+                           required
                         />
                      </div>
 
@@ -196,7 +221,7 @@ export default function OrderCreate() {
                      >
                         Create Order
                      </button>
-                     <Link to={`/staff/products}`}
+                     <Link to={`/staff/products`}
                         type="button"
                         className="text-gray-600 inline-flex items-center hover:text-white border border-gray-600 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-900"
                      >

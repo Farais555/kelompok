@@ -26,6 +26,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('orders', OrderController::class);
     Route::apiResource('/users', UserController::class);
+    Route::apiResource('payments', PaymentController::class);
 
     // Route::get('/user', [UserController::class, 'me']);
     // Route::put('/user', [UserController::class, 'updateSelf']);
@@ -37,4 +38,3 @@ Route::middleware(['auth:api'])->group(function () {
         Route::apiResource('/products', ProductController::class)->only(['update', 'store', 'destroy']);
     });
 });
-Route::apiResource('payments', PaymentController::class);
