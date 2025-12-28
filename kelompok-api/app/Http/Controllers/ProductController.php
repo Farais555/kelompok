@@ -110,7 +110,8 @@ class ProductController extends Controller
         $data = [
             'name' => $request->name,
             'description' => $request->description,
-            'price' => $request->price
+            'price' => $request->price,
+            'stock' => $request->stock,
         ];
 
         // 4. handle image

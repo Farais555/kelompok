@@ -10,6 +10,7 @@ export default function ProductEdit() {
       photo_product: null,
       description: "",
       price: "0",
+      stock: "0",
       _method: "PUT",
    });
 
@@ -21,6 +22,7 @@ export default function ProductEdit() {
             name: productData.name,
             photo_product: productData.photo_product,
             price: productData.price,
+            stock: productData.stock,
             description: productData.description,
             _method: "PUT",
          });
@@ -124,6 +126,24 @@ export default function ProductEdit() {
                            name="price"
                            id="price"
                            value={formData.price}
+                           onChange={handleChange}
+                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                           placeholder="e.g. 150000"
+                           required
+                        />
+                     </div>
+                     <div className="w-full">
+                        <label
+                           htmlFor="stock"
+                           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                           Stock
+                        </label>
+                        <input
+                           type="number"
+                           name="stock"
+                           id="stock"
+                           value={formData.stock}
                            onChange={handleChange}
                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
                            placeholder="e.g. 150000"

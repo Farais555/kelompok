@@ -19,7 +19,8 @@ class OrderSeeder extends Seeder
             "quantity" => "3",
             "total_price" => "20000",
             "address" => "jakarta",
-            "status" => "pending"
+            "status" => "pending",
+            "phone" => "0812xxxx"
         ]);
 
         Order::create([
@@ -28,7 +29,8 @@ class OrderSeeder extends Seeder
             "quantity" => "4",
             "total_price" => "100000",
             "address" => "jakarta",
-            "status" => "approved"
+            "status" => "approved",
+            "phone" => "0813xxxx"
         ]);
     }
 }

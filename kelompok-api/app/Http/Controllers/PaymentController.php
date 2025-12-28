@@ -5,19 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PaymentController extends Controller
 {
     //tampilkan semua order
-    public function index()
+    public function index(Request $request)
     {
-        $payment = Payment::with('order.user')->paginate(5);
+        $user = Auth::user();
+        $perPage = $request->get('per_page', 5);
+
+        // Tentukan kueri dasar
+        if ($user->role === 'admin') {
+            // KONDISI 1: ADMIN - Ambil SEMUA order
+            $query = Payment::query();
+        } else {
+            // Gunakan whereHas jika user_id ada di tabel orders
+            $query = Payment::whereHas('order', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        }
+
+        $payments = $query->with('order.user')->paginate($perPage);
 
         return response()->json([
             "success" => true,
-            "message" => "Get all Payment",
-            "data" => $payment
+            "message" => "Get all Orders",
+            "data" => $payments
         ], 200);
     }
 
@@ -38,6 +53,16 @@ class PaymentController extends Controller
                 "message" => $validator->errors()
             ], 422);
         }
+
+        $existingPayment = Payment::where('order_id', $request->order_id)->first();
+        if ($existingPayment) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment untuk order ini sudah dibuat',
+                'data'    => $existingPayment
+            ], 409); // 409 Conflict
+        }
+
 
         $image = null;
         if ($request->hasFile('proof')) {
