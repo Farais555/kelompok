@@ -34,6 +34,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('/users', UserController::class)->only(['update']);
 
     Route::middleware(['role:admin'])->group(function () {
+        Route::patch('/payments/{payment}', [PaymentController::class, 'update']);
         Route::apiResource('/products', ProductController::class)->only(['update', 'store', 'destroy']);
     });
 });

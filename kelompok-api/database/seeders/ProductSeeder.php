@@ -18,7 +18,7 @@ class ProductSeeder extends Seeder
             'photo_product' => 'gas.jpg',
             'price' => '25000',
             'description' => 'Alat',
-            'stock' => '10'
+            'stock' => '1000'
         ]);
 
         Product::create([
@@ -26,7 +26,7 @@ class ProductSeeder extends Seeder
             'photo_product' => 'galon.jpg',
             'price' => '20000',
             'description' => 'Minuman',
-            'stock' => '10'
+            'stock' => '1000'
         ]);
     }
 }

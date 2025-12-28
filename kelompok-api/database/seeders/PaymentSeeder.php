@@ -16,9 +16,9 @@ class PaymentSeeder extends Seeder
         Payment::create([
             'order_id' => '1',
             'method' => 'cod',
-            'proof' => null,
-            'status' => 'unpaid',
-            'paid_at' => null,
+            'proof' => '2025-11-12',
+            'status' => 'paid',
+            'paid_at' => '2025-11-12',
             'confirmed_at' => '2025-11-12',
         ]);
 

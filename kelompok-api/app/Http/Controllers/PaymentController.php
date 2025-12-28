@@ -74,7 +74,7 @@ class PaymentController extends Controller
             'order_id' => $request->order_id,
             'method' => $request->method,
             'proof' => $image,
-            'status' => 'unpaid'
+            'status' => 'paid'
         ]);
 
         return response()->json([
