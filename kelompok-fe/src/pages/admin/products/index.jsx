@@ -58,6 +58,10 @@ export default function AdminProducts() {
       }
    };
 
+   const formatRupiah = (number) => {
+      return `Rp. ${Number(number).toLocaleString("id-ID")}`;
+   };
+
    if (loading) {
       return <div className="p-4">Memuat data pengguna...</div>;
    }
@@ -133,7 +137,7 @@ export default function AdminProducts() {
                                  <td className="px-4 py-3">
                                     {product.description}
                                  </td>
-                                 <td className="px-4 py-3">{product.price}</td>
+                                 <td className="px-4 py-3">{formatRupiah(product.price)}</td>
                                  <td className="px-4 py-3">{product.stock}</td>
                                  <td className="px-4 py-3 flex items-center justify-end relative">
                                     <button
